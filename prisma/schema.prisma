@@ -1,0 +1,49 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+generator client {
+  provider = "prisma-client-js"
+  output   = "../generated/prisma"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id            Int         @default(autoincrement()) @id //id auto increment
+  email         String      @unique //email so pode ser unica
+  name          String    
+  password      String  
+  createdAt     DateTime    @default(now()) //guarda o momento de criação
+  updateAt      DateTime    @updatedAt //guarda o momento de alteração
+  questions     Questions[]
+  answers       Answers[]
+}
+
+model Questions {
+  id            Int         @default(autoincrement()) @id //id auto increment
+  title         String      
+  body          String    
+  createdAt     DateTime    @default(now()) //guarda o momento de criação
+  updateAt      DateTime    @updatedAt //guarda o momento de alteração
+  userId        Int
+  user          User        @relation(fields: [userId], references: [id])
+  answers       Answers[] 
+}
+// uma questao pode ter varias respostas mas uma resposta so pode ser referente a uma questao
+
+model Answers {
+  id            Int         @default(autoincrement()) @id //id auto increment  
+  body          String    
+  createdAt     DateTime    @default(now()) //guarda o momento de criação
+  updateAt      DateTime    @updatedAt //guarda o momento de alteração
+  userId        Int
+  questionId    Int
+  user          User        @relation(fields: [userId], references: [id]) // nao vai existir na tabela , basicamente esta fazendo relação com o User e ná pratica esta importando o id(do usuario) para o campo userId
+  question      Questions   @relation(fields: [questionId], references: [id])
+}
