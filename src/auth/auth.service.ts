@@ -13,13 +13,12 @@ export class AuthService {
   constructor(
     private readonly userService: UserService,
     private readonly jwtService: JwtService,
-  ) {}
+  ) { }
 
-  async signIn(
-    email: string,
-    password: string,
-  ): Promise<{ access_token: string }> {
+  async signIn(params: { email: string; password: string }): Promise<{ access_token: string }> {
+    const { email, password } = params;
     const user = await this.userService.user({ email });
+
     if (!user) {
       throw new NotFoundException('User not found');
     }
