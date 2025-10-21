@@ -23,7 +23,7 @@ export class AuthGuard implements CanActivate {
       );
       //  Estamos atribuindo a carga útil ao objeto de solicitação aqui
       // para que possamos acessá-la em nossos manipuladores de rota
-      request['user'] = payload; //Isso permite que o controller acesse os dados do usuário autenticado:
+      request['sub'] = payload; //Isso permite que o controller acesse os dados do usuário autenticado:
     } catch {
       throw new UnauthorizedException('Invalid token');
     }

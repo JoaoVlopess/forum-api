@@ -9,9 +9,8 @@ export class QuestionsService {
   @Inject()
   private readonly prisma: PrismaService;
 
-  async create(createQuestionDto: CreateQuestionDto) { //INSERT INTO questions (title, description, userId)
+  async create(createQuestionDto: CreateQuestionDto, userId: number) { //INSERT INTO questions (title, description, userId)
     //VALUES ('Título da questão', 'Descrição da questão', id usuario logado);
-    const userId = 1;
     return await this.prisma.questions.create({
       data: { ...createQuestionDto, userId }
     });
@@ -28,7 +27,6 @@ export class QuestionsService {
   async update(id: number, updateQuestionDto: UpdateQuestionDto) { //UPDATE questions
 //SET title = 'novo título', body = 'novo conteúdo'
 //WHERE id = id usuario logado;
-    const userId = 1;
     return await this.prisma.questions.update({
       where: {id},
       data: updateQuestionDto
