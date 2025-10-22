@@ -9,10 +9,20 @@ export class AnswersService {
   @Inject()
   private readonly prisma: PrismaService;
     
-  async create(createAnswerDto: CreateAnswerDto, userId: number, questionId: number) {
+  async create(createAnswerDto: CreateAnswerDto, userId: any, questionId: number) {
 
+    
+      const newAnswer = {
+        body: createAnswerDto.body,
+        user: {
+          connect: {id: userId.sub},
+        },
+        question: {
+          connect: {id: questionId}
+        }
+      }
     return await this.prisma.answers.create({
-      data: {...createAnswerDto, userId, questionId }
+      data: newAnswer
     });
   }
 
